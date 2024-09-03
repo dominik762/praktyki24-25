@@ -1,0 +1,13 @@
+{
+    "require" : {
+        "php-64bit" : "^8.2.12"
+    },
+    "autoload" : {
+        "psr-4": {
+            "webcrew\\" : "src/",
+            "webcrew\\Test\\" : ""
+        },
+        "files": ["src/browse.php"]
+    },
+    "version" : "1.0.0"
+}
