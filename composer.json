@@ -1,0 +1,16 @@
+{
+    "name": "dominik/praktyki24-25",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "Dominik\\Praktyki2425\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dominik762",
+            "email": "dominik.ostrowski@easyripok.pl"
+        }
+    ],
+    "require": {}
+}
