@@ -12,5 +12,7 @@
             "email": "dominik.ostrowski@easyripok.pl"
         }
     ],
-    "require": {}
+    "require": {
+        "monolog/monolog": "^3.7"
+    }
 }
