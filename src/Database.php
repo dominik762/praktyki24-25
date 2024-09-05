@@ -7,39 +7,30 @@ use PDOException;
 
 class Database
 {
-    private static $instance = null;
-    private $connection;
-    private $database;
+    private static ?Database $instance = null;
+    private PDO $connection;
 
-    private function __construct($database)
+    public function initConnection(string $host, string $user, string $pass, string $databaseName): void
     {
-        $this->database = $database;
-        $this->initConnection();
-    }
-
-    public function initConnection(): void
-    {
-        $user = 'root';
-        $pass = '';
         try
         {
-            $this->connection = new PDO('mysql:host=localhost;dbname=' . $this->database, $user, $pass);
+            $this->connection = new PDO('mysql:host=' . $host . ';dbname=' . $databaseName, $user, $pass);
         }
         catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
     }
-    public static function getInstance($database = 'witryna1db'): Database
+    public static function getInstance(): Database
     {
         if (self::$instance === null) {
-            self::$instance = new Database($database);
+            self::$instance = new Database();
         }
 
         return self::$instance;
     }
 
-    public function getConnection()
+    public function getConnection():PDO
     {
         return $this->connection;
     }

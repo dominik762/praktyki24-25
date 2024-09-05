@@ -5,27 +5,35 @@ namespace App;
 use Monolog\Handler\StreamHandler;
 use Monolog\Level;
 use Monolog\Logger;
+use PDO;
 
 class Kernel
 {
-    private static $instance = null;
-    private $database;
+    private static ?Kernel $instance = null;
+    private static ?Database $database = null;
 
-    private function __construct(Database $database)
+    private function __construct()
     {
-
-        $this->database = $database;
         $this->initLogger();
-        $this->initDatabase();
+//        $this->initDatabase();
     }
 
-    public static function getInstance(Database $database): Kernel
+    public static function getInstance(): Kernel
     {
         if (self::$instance === null) {
-            self::$instance = new Kernel($database);
+            self::$instance = new Kernel();
         }
 
         return self::$instance;
+    }
+
+    public static function getDatabase(): PDO
+    {
+        if (self::$database === null) {
+           self::initDatabase();
+        }
+
+        return self::$database->getConnection();
     }
 
     public function initLogger(): void
@@ -33,17 +41,20 @@ class Kernel
         $log = new Logger('name');
         $log->pushHandler(new StreamHandler(__DIR__ . '/../storage/logs/logi.log', Level::Info));
         $log->info('Aplikacja wystartowała');
+
     }
 
-    public function initDatabase(): void
+    public static function initDatabase(): void
     {
-        $connection = $this->database->getConnection();
-
-        if ($connection) {
-            echo "Połączenie z bazą danych zostało nawiązane";
-        } else {
-            echo "Nie udało się nawiązać połączenia z bazą danych";
-        }
+        self::$database = Database::getInstance();
+        self::$database->initConnection('localhost', 'root', '','witryna1db');
+//        $connection =self::$database->getConnection();
+//
+//        if ($connection) {
+//            echo "Połączenie z bazą danych zostało nawiązane";
+//        } else {
+//            echo "Nie udało się nawiązać połączenia z bazą danych";
+//        }
     }
 
 }
