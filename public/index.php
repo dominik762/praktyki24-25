@@ -5,9 +5,10 @@ use App\Kernel;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
-$database = new Database('witryna1db');
+$database = Database::getInstance('witryna1db');
 
-$kernel = new Kernel($database);
+$kernel = Kernel::getInstance($database);
+
 
 
 

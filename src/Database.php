@@ -7,9 +7,11 @@ use PDOException;
 
 class Database
 {
-    public $connection;
+    private static $instance = null;
+    private $connection;
+    private $database;
 
-    public function __construct($database)
+    private function __construct($database)
     {
         $this->database = $database;
         $this->initConnection();
@@ -27,6 +29,14 @@ class Database
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
+    }
+    public static function getInstance($database = 'witryna1db'): Database
+    {
+        if (self::$instance === null) {
+            self::$instance = new Database($database);
+        }
+
+        return self::$instance;
     }
 
     public function getConnection()

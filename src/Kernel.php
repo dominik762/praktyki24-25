@@ -8,14 +8,24 @@ use Monolog\Logger;
 
 class Kernel
 {
-    public $database;
+    private static $instance = null;
+    private $database;
 
-    public function __construct(Database $database)
+    private function __construct(Database $database)
     {
 
         $this->database = $database;
         $this->initLogger();
         $this->initDatabase();
+    }
+
+    public static function getInstance(Database $database): Kernel
+    {
+        if (self::$instance === null) {
+            self::$instance = new Kernel($database);
+        }
+
+        return self::$instance;
     }
 
     public function initLogger(): void
@@ -35,4 +45,5 @@ class Kernel
             echo "Nie udało się nawiązać połączenia z bazą danych";
         }
     }
+
 }
