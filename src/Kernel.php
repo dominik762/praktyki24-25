@@ -46,6 +46,7 @@ class Kernel
 
     public static function initDatabase(): void
     {
+        $logger = self::getLogger();
         self::$database = Database::getInstance();
         self::$database->initConnection('localhost', 'root', '','witryna1db');
 //        $connection =self::$database->getConnection();
@@ -55,6 +56,10 @@ class Kernel
 //        } else {
 //            echo "Nie udało się nawiązać połączenia z bazą danych";
 //        }
+    }
+
+    private static function getLogger()
+    {
     }
 
 }
