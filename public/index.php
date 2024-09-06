@@ -8,5 +8,7 @@ $kernel = Kernel::getInstance();
 
 $PDO = Kernel::getDatabase();
 
+$User1 = Kernel::getUser();
+
 
 ?>

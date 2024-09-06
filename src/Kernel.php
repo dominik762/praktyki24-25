@@ -12,6 +12,7 @@ class Kernel
     private static ?Kernel $instance = null;
     private static ?Database $database = null;
     private static ?Logger $logger = null;
+    private static ?User $user = null;
 
     public static function getInstance(): Kernel
     {
@@ -38,6 +39,13 @@ class Kernel
 
         return self::$logger;
     }
+    public static function getUser(): User
+    {
+        if (self::$user === null) {
+            self::initUser();
+        }
+        return self::$user;
+    }
 
     public static function initLogger(): Logger
     {
@@ -46,6 +54,10 @@ class Kernel
         $log->info('Aplikacja wystartowała');
 
         return $log;
+    }
+    public static function initUser(): void
+    {
+        self::$user = User::getInstance();
     }
 
     public static function initDatabase(): void
