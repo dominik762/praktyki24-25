@@ -8,7 +8,6 @@ use App\Kernel;
 
 class User {
 
-    private static ?User $instance = null;
     private ?int $id = null;
     private ?string $name = null;
     private ?string $email = null;
@@ -17,7 +16,7 @@ class User {
 
     private function __construct()
     {
-        $this->db = Kernel::getDatabase();
+
     }
 
     //gettery
@@ -55,7 +54,7 @@ class User {
         return self::$instance;
     }
 
-    public function getUserId(int $id): ?self
+    public function find(int $id): ?self
     {
         $sql = "SELECT * FROM users WHERE id = :id";
         $stmt = $this->db->prepare($sql);
@@ -71,17 +70,6 @@ class User {
             return $this;
         }
         return null;
-    }
-    public function  printUser():void
-    {
-        $user = $this->getUserId(1);
-        if ($user) {
-            echo "ID: " . $user->getId() . "<br>";
-            echo "Imię: " . $user->getName() . "<br>";
-            echo "Email: " . $user->getEmail();
-        } else {
-            echo "Użytkownik nie znaleziony";
-        }
     }
 
 }
