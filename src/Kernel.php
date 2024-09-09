@@ -13,12 +13,12 @@ class Kernel
 
     public static function getInstance(): Kernel
     {
-        if (self::$instance === null)
+        if (static::$instance === null)
         {
-            self::$instance = new Kernel();
+            static::$instance = new Kernel();
         }
 
-        return self::$instance;
+        return static::$instance;
     }
 
 
