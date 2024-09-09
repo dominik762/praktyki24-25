@@ -12,18 +12,7 @@ class Logger
     private static ?MonologLogger $logger = null;
 
 
-//    public static function getInstance(): MonologLogger
-//    {
-//        if (static::$instance === null)
-//        {
-//            static::getLogger();
-//
-//        }
-//
-//        return static::getLogger();
-//    }
-
-    public static function getLogger(): MonologLogger
+    public static function getInstance(): MonologLogger
     {
         if (static::$logger === null)
         {

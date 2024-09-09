@@ -27,7 +27,7 @@ class Database
         {
             $database = new self();
             $database->initDatabase();
-            Logger::getLogger();
+            Logger::getInstance();
             static::$instance = $database;
             return $database->getConnection();
         }
@@ -45,10 +45,10 @@ class Database
 
         if (static::getConnection() !== null)
         {
-            Logger::getLogger()->info('Połączenie z bazą danych zostało nawiązane');
+            Logger::getInstance()->info('Połączenie z bazą danych zostało nawiązane');
         } else
         {
-            Logger::getLogger()->info('Nie udało się nawiązać połączenia z bazą danych');
+            Logger::getInstance()->info('Nie udało się nawiązać połączenia z bazą danych');
         }
     }
 }
