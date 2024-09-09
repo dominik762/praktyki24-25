@@ -12,14 +12,6 @@ class User {
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;
-//    private PDO $db;
-
-    public function __construct()
-    {
-//        $this->db = Kernel::getInstance()->getDatabase();
-    }
-
-    //gettery
     public function getId():?int {
         return $this->id;
     }
@@ -35,7 +27,8 @@ class User {
     {
         return $this->password;
     }
-    //settery
+
+
     public function setId(?int $id): void
     {
         $this->id = $id;
@@ -61,14 +54,9 @@ class User {
         $stmt->bindParam(':id', $id,PDO::PARAM_INT);
         $stmt->execute();
 
-        $userData = $stmt->fetch(PDO::FETCH_OBJ);
-        if($userData) {
-            $user = new self($db);
-            $user->setId($userData->id);
-            $user->setName($userData->name);
-            $user->setEmail($userData->email);
-            $user->setPassword($userData->password);
-
+        $stmt->setFetchMode(PDO::FETCH_CLASS,self::class);
+        $user = $stmt->fetch();
+        if($user) {
             return $user;
         }
         return null;
