@@ -2,9 +2,9 @@
 
 namespace App;
 
+use App\Kernel;
 use PDO;
 use PDOException;
-use App\Kernel;
 
 class User {
 
@@ -12,62 +12,64 @@ class User {
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;
-    private PDO $db;
+//    private PDO $db;
 
-    private function __construct()
+    public function __construct()
     {
-
+//        $this->db = Kernel::getInstance()->getDatabase();
     }
 
     //gettery
-    public function getId() {
+    public function getId():?int {
         return $this->id;
     }
-    public function getName() {
+    public function getName(): ?string
+    {
         return $this->name;
     }
-    public function getEmail() {
+    public function getEmail(): ?string
+    {
         return $this->email;
     }
-    public function getPassword() {
+    public function getPassword(): ?string
+    {
         return $this->password;
     }
     //settery
-    public function setId($id) {
+    public function setId(?int $id): void
+    {
         $this->id = $id;
     }
-    public function setName($name) {
+    public function setName(?string $name): void
+    {
         $this->name = $name;
     }
-    public function setEmail($email) {
+    public function setEmail(?string $email): void
+    {
         $this->email = $email;
     }
-    public function setPassword($password) {
+    public function setPassword(?string $password): void
+    {
         $this->password = $password;
     }
-    public static function getInstance(): User
-    {
-        if (self::$instance === null) {
-            self::$instance = new User();
-        }
 
-        return self::$instance;
-    }
-
-    public function find(int $id): ?self
+    public static function find(int $id): ?self
     {
+        $db = Kernel::getInstance()->getDatabase();
         $sql = "SELECT * FROM users WHERE id = :id";
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id,PDO::PARAM_INT);
         $stmt->execute();
 
-        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
+        $userData = $stmt->fetch(PDO::FETCH_OBJ);
         if($userData) {
-            $this->id = $userData['id'];
-            $this->name = $userData['name'];
-            $this->email = $userData['email'];
-            $this->password = $userData['password'];
-            return $this;
+            $user = new self($db);
+            $user->setId($userData->id);
+            $user->setName($userData->name);
+            $user->setEmail($userData->email);
+            $user->setPassword($userData->password);
+
+            return $user;
         }
         return null;
     }
