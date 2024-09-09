@@ -23,9 +23,11 @@ class Database
     }
     public static function getInstance(): PDO
     {
-        if (static::$instance === null) {
+        if (static::$instance === null)
+        {
             $database = new self();
             $database->initDatabase();
+            Logger::getLogger();
             static::$instance = $database;
             return $database->getConnection();
         }
@@ -40,14 +42,13 @@ class Database
     private function initDatabase(): void
     {
         $this->initConnection('localhost', 'root', '','witryna1db');
-//
-//        if (self::$database->getConnection() !== null)
-//        {
-//            self::$logger->info('Połączenie z bazą danych zostało nawiązane');
-//        } else
-//        {
-//            self::$logger->info('Nie udało się nawiązać połączenia z bazą danych');
-//        }
-//    }
+
+        if (static::getConnection() !== null)
+        {
+            Logger::getLogger()->info('Połączenie z bazą danych zostało nawiązane');
+        } else
+        {
+            Logger::getLogger()->info('Nie udało się nawiązać połączenia z bazą danych');
+        }
     }
 }
