@@ -6,13 +6,15 @@ use App\Kernel;
 use PDO;
 use PDOException;
 
-class User {
+class User
+{
 
     private ?int $id = null;
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;
-    public function getId():?int {
+    public function getId():?int
+    {
         return $this->id;
     }
     public function getName(): ?string
@@ -48,7 +50,7 @@ class User {
 
     public static function find(int $id): ?self
     {
-        $db = Kernel::getInstance()->getDatabase();
+        $db = Database::getInstance();
         $sql = "SELECT * FROM users WHERE id = :id";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id,PDO::PARAM_INT);

@@ -8,30 +8,47 @@ use PDOException;
 class Database
 {
     private static ?Database $instance = null;
-    private PDO $connection;
+    private static PDO $connection;
 
-    public function initConnection(string $host, string $user, string $pass, string $databaseName): void
+    private function initConnection(string $host, string $user, string $pass, string $databaseName): void
     {
         try
         {
-            $this->connection = new PDO('mysql:host=' . $host . ';dbname=' . $databaseName, $user, $pass);
+            static::$connection = new PDO('mysql:host=' . $host . ';dbname=' . $databaseName, $user, $pass);
         }
         catch (PDOException $e)
         {
             echo 'Connection failed: ' . $e->getMessage();
         }
     }
-    public static function getInstance(): Database
+    public static function getInstance(): PDO
     {
-        if (self::$instance === null) {
-            self::$instance = new Database();
+        if (static::$instance === null)
+        {
+            $database = new self();
+            $database->initDatabase();
+            Logger::getInstance();
+            static::$instance = $database;
+            return $database->getConnection();
         }
+        return static::$connection;
 
-        return self::$instance;
     }
 
-    public function getConnection():PDO
+    private function getConnection():PDO
     {
-        return $this->connection;
+        return static::$connection;
+    }
+    private function initDatabase(): void
+    {
+        $this->initConnection('localhost', 'root', '','witryna1db');
+
+        if (static::getConnection() !== null)
+        {
+            Logger::getInstance()->info('Połączenie z bazą danych zostało nawiązane');
+        } else
+        {
+            Logger::getInstance()->info('Nie udało się nawiązać połączenia z bazą danych');
+        }
     }
 }
