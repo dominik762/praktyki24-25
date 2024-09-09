@@ -10,8 +10,7 @@ use PDO;
 class Kernel
 {
     private static ?Kernel $instance = null;
-    private static ?Database $database = null;
-    private static ?Logger $logger = null;
+
 
     public static function getInstance(): Kernel
     {
@@ -20,15 +19,6 @@ class Kernel
         }
 
         return self::$instance;
-    }
-
-    public static function getDatabase(): PDO
-    {
-        if (self::$database === null) {
-           self::initDatabase();
-        }
-
-        return self::$database->getConnection();
     }
     public static function getLogger(): Logger
     {
@@ -48,20 +38,6 @@ class Kernel
         return $log;
     }
 
-    public static function initDatabase(): void
-    {
-        self::$logger = self::getLogger();
-        self::$database = Database::getInstance();
-        self::$database->initConnection('localhost', 'root', '','witryna1db');
-
-        if (self::$database->getConnection() !== null)
-        {
-            self::$logger->info('Połączenie z bazą danych zostało nawiązane');
-        } else
-        {
-            self::$logger->info('Nie udało się nawiązać połączenia z bazą danych');
-        }
-    }
 
 
 

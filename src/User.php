@@ -48,7 +48,7 @@ class User {
 
     public static function find(int $id): ?self
     {
-        $db = Kernel::getInstance()->getDatabase();
+        $db = Database::getInstance();
         $sql = "SELECT * FROM users WHERE id = :id";
         $stmt = $db->prepare($sql);
         $stmt->bindParam(':id', $id,PDO::PARAM_INT);
