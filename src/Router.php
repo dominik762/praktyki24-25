@@ -4,6 +4,7 @@ namespace App;
 
 use App\Controllers\DashboardController;
 use App\Controllers\UserManagementController;
+use App\Exceptions\UndefinedControllerException;
 
 class Router
 {
@@ -27,11 +28,11 @@ class Router
                     break;
 
                 default:
-                    echo "Nieznany kontroler";
+                    throw new UndefinedControllerException();
                     break;
             }
         } else {
-            echo "Brak parametrów w URL";
+            DashboardController::show();
         }
     }
 }
