@@ -9,7 +9,7 @@ use PDOException;
 class User
 {
 
-    private ?int $id = null;
+    public ?int $id = null;
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;

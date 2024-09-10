@@ -10,6 +10,12 @@ use PDO;
 class Kernel
 {
     private static ?Kernel $instance = null;
+    private Router $router;
+
+    private function __construct()
+    {
+        $this->router = new Router();
+    }
 
     public static function getInstance(): Kernel
     {
@@ -19,6 +25,11 @@ class Kernel
         }
 
         return static::$instance;
+    }
+
+    public function run(): void
+    {
+        $this->router->route();
     }
 
 
