@@ -13,6 +13,11 @@ class User
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;
+
+    public function __construct()
+    {
+    }
+
     public function getId():?int
     {
         return $this->id;
@@ -62,6 +67,18 @@ class User
             return $user;
         }
         return null;
+    }
+    public static function addUser(): void
+    {
+        if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
+            $db = Database::getInstance();
+            $name = $_POST['name'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+            $sql = "Insert into users (id,name, email, password) values (null,?,?,?)";
+            $stmt = $db->prepare($sql);
+            $stmt->execute([$name, $email, $password]);
+        }
     }
 
 }
