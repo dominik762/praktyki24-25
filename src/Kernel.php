@@ -32,8 +32,7 @@ class Kernel
         }
         catch (UndefinedControllerException $e)
         {
-            $_POST['msg']=$e->getMessage();
-
+            echo $e->getMessage();
 
         }
     }

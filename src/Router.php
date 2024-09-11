@@ -28,11 +28,7 @@ class Router
                     break;
 
                 default:
-                    if(isset($_POST['msg']))
-                    {
-                        $msg = $_POST['msg'];
-                        throw new UndefinedControllerException($msg);
-                    }
+                    throw new UndefinedControllerException("Unknown controller");
             }
         } else {
             DashboardController::show();
