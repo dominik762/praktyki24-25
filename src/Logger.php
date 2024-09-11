@@ -8,10 +8,7 @@ use Monolog\Logger as MonologLogger;
 
 class Logger
 {
-//    private static ?Logger $instance = null;
     private static ?MonologLogger $logger = null;
-
-
     public static function getInstance(): MonologLogger
     {
         if (static::$logger === null)

@@ -2,14 +2,17 @@
 
 namespace App;
 
-use Monolog\Handler\StreamHandler;
-use Monolog\Level;
-use Monolog\Logger;
-use PDO;
+use App\Exceptions\UndefinedControllerException;
 
 class Kernel
 {
     private static ?Kernel $instance = null;
+    private Router $router;
+
+    private function __construct()
+    {
+        $this->router = new Router();
+    }
 
     public static function getInstance(): Kernel
     {
@@ -19,6 +22,19 @@ class Kernel
         }
 
         return static::$instance;
+    }
+
+    public function run(): void
+    {
+        try
+        {
+            $this->router->route();
+        }
+        catch (UndefinedControllerException $e)
+        {
+            echo $e->getMessage();
+
+        }
     }
 
 
