@@ -6,12 +6,7 @@ use App\User;
 
 class UserManagementController
 {
-    public function index()
-    {
-        echo "Lista użytkowników";
-    }
-
-    public static function show(int $id)
+    public function show(int $id):void
     {
         $user = User::find($id);
         if ($user) {

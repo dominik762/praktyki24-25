@@ -2,12 +2,18 @@
 
 namespace App;
 
+use App\Controllers\DashboardController;
+use App\Controllers\UserManagementController;
 use App\Exceptions\UndefinedControllerException;
 
 class Kernel
 {
     private static ?Kernel $instance = null;
     private Router $router;
+    private array $availableControllers = array(
+        'dashboard'=>DashboardController::class,
+        'usermanagement'=>UserManagementController::class,
+    );
 
     private function __construct()
     {
@@ -28,11 +34,11 @@ class Kernel
     {
         try
         {
-            $this->router->route();
+            $this->router->route($this->availableControllers);
         }
         catch (UndefinedControllerException $e)
         {
-            echo $e->getMessage();
+            echo 'UndefinedControllerException: ' . $e->getMessage();
 
         }
     }

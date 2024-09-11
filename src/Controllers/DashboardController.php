@@ -4,7 +4,7 @@ namespace App\Controllers;
 
 class DashboardController
 {
-    public static function show()
+    public function show()
     {
         echo "to jest dashboard<br>";
     }
