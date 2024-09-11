@@ -68,17 +68,5 @@ class User
         }
         return null;
     }
-    public static function addUser(): void
-    {
-        if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
-            $db = Database::getInstance();
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $sql = "Insert into users (id,name, email, password) values (null,?,?,?)";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([$name, $email, $password]);
-        }
-    }
 
 }
