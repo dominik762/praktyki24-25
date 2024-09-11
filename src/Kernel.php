@@ -32,7 +32,9 @@ class Kernel
         }
         catch (UndefinedControllerException $e)
         {
-            echo 'Connection failed: ' . $e->getMessage();
+            $_POST['msg']=$e->getMessage();
+
+
         }
     }
 

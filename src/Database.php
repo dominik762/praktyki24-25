@@ -18,7 +18,7 @@ class Database
         }
         catch (PDOException $e)
         {
-            echo 'Connection failed: ' . $e->getMessage();
+            echo $e->getMessage();
         }
     }
     public static function getInstance(): PDO
