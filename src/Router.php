@@ -17,7 +17,7 @@ class Router
         if (isset($_GET['controller']) && isset($_GET['do'])) {
             $controller = htmlspecialchars($_GET['controller']);
             $do = htmlspecialchars($_GET['do']);
-            $params = $_GET;
+            $params = $_POST;
 
             if (isset($availableControllers[$controller])) {
                 $className = $availableControllers[$controller];
