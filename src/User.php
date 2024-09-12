@@ -13,6 +13,11 @@ class User
     private ?string $name = null;
     private ?string $email = null;
     private ?string $password = null;
+
+    public function __construct()
+    {
+    }
+
     public function getId():?int
     {
         return $this->id;
