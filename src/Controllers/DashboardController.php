@@ -2,11 +2,15 @@
 
 namespace App\Controllers;
 
+use App\View;
+
 class DashboardController
 {
-    public function show()
+    public function show():void
     {
-        echo "to jest dashboard<br>";
+        View::render('dashboard', [
+            'title' => 'Dashboard',
+        ]);
     }
 
 }
