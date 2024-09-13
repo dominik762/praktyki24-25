@@ -22,7 +22,7 @@ class UserManagementController
     {
         echo '
             <h1>Rejestracja nowego użytkownika</h1>
-            <form action="/public/index.php?controller=usermanagement&do=store" method="POST">
+            <form action="/praktyki24-25/public/index.php?controller=usermanagement&do=store" method="POST">
                 <label for="name">Nazwa:</label>
                 <input type="text" id="name" name="name" required>
                 <br><br>
@@ -55,6 +55,10 @@ class UserManagementController
         $stmt = $db->prepare($sql);
         $stmt->execute();
 
+        echo "<form action='/praktyki24-25/public/index.php?controller=usermanagement&do=create' method='POST'>";
+        echo "<input type='submit' value='Dodaj użytkownika'>";
+        echo "</form>";
+
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             echo "<br>";
             echo "<div>";
@@ -67,13 +71,13 @@ class UserManagementController
             echo "</div>";
 
             // Formularz usuwania użytkownika (POST tylko dla ID, controller i do przez GET)
-            echo "<form action='/public/index.php?controller=usermanagement&do=delete' method='POST'>";
+            echo "<form action='/praktyki24-25/public/index.php?controller=usermanagement&do=delete' method='POST'>";
             echo "<input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>";
             echo "<input type='submit' value='Usuń {$row['name']}'>";
             echo "</form>";
 
             // Formularz edycji użytkownika (POST tylko dla ID, controller i do przez GET)
-            echo "<form action=/public/index.php?controller=usermanagement&do=editForm' method='POST'>";
+            echo "<form action='/praktyki24-25/public/index.php?controller=usermanagement&do=editForm' method='POST'>";
             echo "<input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>";
             echo "<input type='submit' value='Edytuj {$row['name']}'>";
             echo "</form>";
@@ -120,7 +124,7 @@ class UserManagementController
             echo "id: " . $id . " imię: " . $name . " email: " . $email . " Hasło: " . $password . "<br>";
 
             // Formularz edycji (POST tylko dla ID, controller i do przez GET)
-            echo "<form action='/public/index.php?controller=usermanagement&do=edit' method='POST'>";
+            echo "<form action='/praktyki24-25/public/index.php?controller=usermanagement&do=edit' method='POST'>";
             echo "<input type='hidden' name='id' value='" . htmlspecialchars($row['id']) . "'>";
             echo '<label for="name">Nazwa:</label>
             <input type="text" id="name" name="name" required value="' . htmlspecialchars($name) . '">
