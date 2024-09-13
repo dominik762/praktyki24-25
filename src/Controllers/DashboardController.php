@@ -6,9 +6,9 @@ use App\View;
 
 class DashboardController
 {
-    public function show()
+    public function show():void
     {
-        echo View::render('dashboard', [
+        View::render('dashboard', [
             'title' => 'Dashboard',
         ]);
     }

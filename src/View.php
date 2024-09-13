@@ -15,9 +15,9 @@ class View
 
         return self::$instance;
     }
-    public static function render($view, $data = []):string
+    public static function render($view, $data = []):void
     {
-        return self::getInstance()->render($view, $data);
+        echo self::getInstance()->render($view, $data);
     }
 
 }
