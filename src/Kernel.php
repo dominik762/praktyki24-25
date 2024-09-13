@@ -32,16 +32,7 @@ class Kernel
 
     public function run(): void
     {
-        echo"
-            <!DOCTYPE html>
-            <html lang='pl'>
-            <head>
-                <meta charset='UTF-8'>
-                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                <link rel='stylesheet' href='styles/styles-index.css'>
-            </head>
-            <body>
-";
+        View::render('indexView.header', ['title' => 'Your Application Title']);
         try
         {
             $this->router->route($this->availableControllers);
@@ -51,10 +42,7 @@ class Kernel
             echo 'UndefinedControllerException: ' . $e->getMessage();
 
         }
-        echo "
-        </body>
-        </html>
-        ";
+        View::render('indexView.footer');
     }
 
 
