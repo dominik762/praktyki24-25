@@ -5,6 +5,7 @@ namespace App;
 use App\Controllers\DashboardController;
 use App\Controllers\UserManagementController;
 use App\Exceptions\UndefinedControllerException;
+use Dotenv\Dotenv;
 
 class Kernel
 {
@@ -25,6 +26,7 @@ class Kernel
         if (static::$instance === null)
         {
             static::$instance = new Kernel();
+            self::initEnv();
         }
 
         return static::$instance;
@@ -43,6 +45,11 @@ class Kernel
 
         }
         View::render('indexView.footer');
+    }
+    private static function initEnv():void
+    {
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv->safeload();
     }
 
 

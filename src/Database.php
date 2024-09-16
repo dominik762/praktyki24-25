@@ -41,7 +41,11 @@ class Database
     }
     private function initDatabase(): void
     {
-        $this->initConnection('localhost', 'root', '','witryna1db');
+        $host = $_ENV['DB_HOST'];
+        $database = $_ENV['DB_DATABASE'];
+        $username = $_ENV['DB_USERNAME'];
+        $password = $_ENV['DB_PASSWORD'];
+        $this->initConnection($host, $username, $password,$database);
 
         if (static::getConnection() !== null)
         {
