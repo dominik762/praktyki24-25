@@ -2,4 +2,4 @@
 /vendor/
 /storage/logs/logi.log
 /storage/cache/
-/secured/.env
+/.env
