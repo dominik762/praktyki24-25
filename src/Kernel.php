@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Controllers\AuthUser;
 use App\Controllers\DashboardController;
 use App\Controllers\UserManagementController;
 use App\Exceptions\UndefinedControllerException;
@@ -14,6 +15,7 @@ class Kernel
     private array $availableControllers = array(
         'dashboard'=>DashboardController::class,
         'usermanagement'=>UserManagementController::class,
+        'authuser'=>AuthUser::class,
     );
 
     private function __construct()

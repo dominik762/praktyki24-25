@@ -10,5 +10,8 @@
 <form action="/praktyki24-25/public/index.php?controller=usermanagement&do=showAll" method="POST">
     <input type="submit" id="goUserManagement" value="Zarządzaj użytkownikami">
 </form>
+<form action="/praktyki24-25/public/index.php?controller=authuser&do=signIn" method="POST">
+    <input type="submit" id="signIn" value="Zaloguj się">
+</form>
 </body>
 </html>
