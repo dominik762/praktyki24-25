@@ -10,6 +10,12 @@ use PDO;
 
 class AuthUser
 {
+    public function __construct()
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
 
     private static function validatePassword(mixed $password, mixed $passwordConfirmation):void
     {
@@ -62,11 +68,16 @@ class AuthUser
     /**
      * @throws UndefinedControllerException
      */
-
-    public function signIn():void
+    public function signIn(): void
     {
-        View::render('UserManagement.AuthUser.signIn');
+        if(empty($_SESSION['userId'])) {
+            View::render('UserManagement.AuthUser.signIn');
+        } else {
+            header('Location: /praktyki24-25/public/index.php?controller=dashboard&do=show');
+            exit();
+        }
     }
+
     public function register(): void
     {
         self::validateRequestData($_POST);
@@ -87,24 +98,32 @@ class AuthUser
     }
 
 
-    
+
     public function login(): void
     {
         if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
 
             $email = $_POST['email'];
-
             $password = $_POST['password'];
-            if(true===self::verifyPassword($password, $email)){
-                $user = User::findByEmail($email);
-                if(isset($user)) {
-                    $userId = $user->getId();
-                    $_SESSION['userId'] = $userId;
-                }
 
+            if (true === self::verifyPassword($password, $email)) {
+                $user = User::findByEmail($email);
+                if (isset($user)) {
+                    $userId = $user->getId();
+
+                    if (session_status() === PHP_SESSION_NONE) {
+                        session_start();
+                    }
+                    $_SESSION['userId'] = $userId;
+                    var_dump($_SESSION);
+
+                    header('Location: /praktyki24-25/public/index.php?controller=dashboard&do=show');
+                    exit();
+                }
             }
         }
     }
+
 
     private static function verifyPassword(mixed $password,mixed $email):bool
     {
@@ -114,4 +133,44 @@ class AuthUser
         }
         return password_verify($password, $hash);
     }
+
+    public function logout(): void
+    {
+        if (session_status() === PHP_SESSION_ACTIVE) {
+            $_SESSION = [];
+            session_destroy();
+
+
+
+            if (ini_get("session.use_cookies")) {
+                $params = session_get_cookie_params();
+                setcookie(session_name(), '', time() - 42000,
+                    $params["path"], $params["domain"],
+                    $params["secure"], $params["httponly"]
+                );
+            }
+        }
+        var_dump($_SESSION);
+
+        header('Location: /praktyki24-25/public/index.php?controller=dashboard&do=show');
+        exit();
+    }
+    public function signOut(): void
+    {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        if (isset($_SESSION['userId'])) {
+            $userId = $_SESSION['userId'];
+            $user = User::find($userId);
+            View::render(
+                'UserManagement.AuthUser.signOut',
+                [
+                    'name' => $user->getName(),
+                ]
+            );
+        }
+    }
+
+
 }

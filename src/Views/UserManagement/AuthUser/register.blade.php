@@ -1,3 +1,8 @@
+<?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+?>
 <form action="http://localhost/praktyki24-25/public/index.php?controller=authuser&do=register" method="post">
     <h2>Rejestracja</h2>
 

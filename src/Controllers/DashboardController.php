@@ -8,6 +8,7 @@ class DashboardController
 {
     public function show():void
     {
+
         View::render('dashboard', [
             'title' => 'Dashboard',
         ]);
