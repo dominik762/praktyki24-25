@@ -8,11 +8,12 @@ use App\Controllers\UserManagementController;
 use App\Exceptions\AccessException;
 use App\Exceptions\UndefinedControllerException;
 use Dotenv\Dotenv;
-use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Illuminate\Filesystem\Filesystem;
 
 class Kernel
 {
     private static ?Kernel $instance = null;
+    private static ?Filesystem $filesystem = null;
     private Router $router;
     private array $availableControllers = array(
         'dashboard' => DashboardController::class,
@@ -22,6 +23,7 @@ class Kernel
 
     private function __construct()
     {
+        self::initEnv();
         $this->router = new Router();
         Session::start();
     }
@@ -30,10 +32,17 @@ class Kernel
     {
         if (static::$instance === null) {
             static::$instance = new Kernel();
-            self::initEnv();
         }
 
         return static::$instance;
+    }
+
+    public static function getFilesystem(): Filesystem
+    {
+        if (static::$filesystem === null) {
+            static::$filesystem = new Filesystem();
+        }
+        return static::$filesystem;
     }
 
     public function run(): void
