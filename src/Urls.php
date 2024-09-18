@@ -5,6 +5,7 @@ namespace App;
 use App\Exceptions\UndefinedRouteException;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class Urls
 {
@@ -20,17 +21,17 @@ class Urls
      */
     private function loadUrls(): array
     {
-        $files = [
-            '../routes/auth.php',
-            '../routes/dashboard.php',
-            '../routes/usermanagement.php',
-        ];
+        $directory = '../routes';
+
+        $finder = new Finder();
+        $finder->files()->in($directory)->name('*.php');
 
         $availableRoutes = [];
 
-        foreach ($files as $file) {
-            if ($this->filesystem->exists($file)) {
-                $routes = $this->filesystem->getRequire($file);
+        foreach ($finder as $file) {
+            $filePath = $file->getRealPath();
+            if ($this->filesystem->exists($filePath)) {
+                $routes = $this->filesystem->getRequire($filePath);
                 $availableRoutes = array_merge($availableRoutes, $routes);
             }
         }
