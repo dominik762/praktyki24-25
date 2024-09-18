@@ -12,19 +12,16 @@ class Database
 
     private function initConnection(string $host, string $user, string $pass, string $databaseName): void
     {
-        try
-        {
+        try {
             static::$connection = new PDO('mysql:host=' . $host . ';dbname=' . $databaseName, $user, $pass);
-        }
-        catch (PDOException $e)
-        {
+        } catch (PDOException $e) {
             echo $e->getMessage();
         }
     }
+
     public static function getInstance(): PDO
     {
-        if (static::$instance === null)
-        {
+        if (static::$instance === null) {
             $database = new self();
             $database->initDatabase();
             Logger::getInstance();
@@ -35,23 +32,22 @@ class Database
 
     }
 
-    private function getConnection():PDO
+    private function getConnection(): PDO
     {
         return static::$connection;
     }
+
     private function initDatabase(): void
     {
         $host = $_ENV['DB_HOST'];
         $database = $_ENV['DB_DATABASE'];
         $username = $_ENV['DB_USERNAME'];
         $password = $_ENV['DB_PASSWORD'];
-        $this->initConnection($host, $username, $password,$database);
+        $this->initConnection($host, $username, $password, $database);
 
-        if (static::getConnection() !== null)
-        {
+        if (static::getConnection() !== null) {
             Logger::getInstance()->info('Połączenie z bazą danych zostało nawiązane');
-        } else
-        {
+        } else {
             Logger::getInstance()->info('Nie udało się nawiązać połączenia z bazą danych');
         }
     }

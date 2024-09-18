@@ -1,6 +1,7 @@
 <?php
 
 use App\Kernel;
+use App\Session;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

@@ -61,7 +61,22 @@ class User
         $stmt->bindParam(':id', $id,PDO::PARAM_INT);
         $stmt->execute();
 
-        $stmt->setFetchMode(PDO::FETCH_CLASS,self::class);
+        $stmt->setFetchMode(PDO::FETCH_CLASS,static::class);
+        $user = $stmt->fetch();
+        if($user) {
+            return $user;
+        }
+        return null;
+    }
+    public static function findByEmail(string $email):?self
+    {
+        $db = Database::getInstance();
+        $sql = "SELECT * FROM users WHERE email = :email";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':email', $email,PDO::PARAM_STR);
+        $stmt->execute();
+
+        $stmt->setFetchMode(PDO::FETCH_CLASS,static::class);
         $user = $stmt->fetch();
         if($user) {
             return $user;

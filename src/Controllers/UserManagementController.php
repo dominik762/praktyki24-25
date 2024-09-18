@@ -21,20 +21,7 @@ class UserManagementController
 
     public function create(): void
     {
-        View::render('UserManagement.create');
-    }
-
-    public function store(): void
-    {
-        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
-            $db = Database::getInstance();
-            $name = $_POST['name'];
-            $email = $_POST['email'];
-            $password = $_POST['password'];
-            $sql = "INSERT INTO users (id, name, email, password) VALUES (null, ?, ?, ?)";
-            $stmt = $db->prepare($sql);
-            $stmt->execute([$name, $email, $password]);
-        }
+        View::render('UserManagement..AuthUser.register');
     }
 
     public static function showAll(): void
