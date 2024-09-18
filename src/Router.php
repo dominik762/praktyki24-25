@@ -2,18 +2,19 @@
 
 namespace App;
 
-use App\Controllers\DashboardController;
-use App\Controllers\UserManagementController;
 use App\Exceptions\UndefinedControllerException;
+use App\Exceptions\UndefinedRouteException;
 
 class Router
 {
     /**
      * @throws UndefinedControllerException
      * @throws \ReflectionException
+     * @throws UndefinedRouteException
      */
     public function route(array $availableControllers): void
     {
+        Session::checkAccess();
         if (isset($_GET['controller']) && isset($_GET['do'])) {
             $controller = htmlspecialchars($_GET['controller']);
             $do = htmlspecialchars($_GET['do']);
@@ -28,16 +29,14 @@ class Router
                     $reflection = new \ReflectionMethod($class, $do);
                     $requiredParams = $reflection->getParameters();
 
-                    if (method_exists($class, $do))
-                    {
+                    if (method_exists($class, $do)) {
                         if (count($requiredParams) > 0) {
                             $methodParams = [];
                             foreach ($requiredParams as $param) {
                                 $paramName = $param->getName();
                                 if (isset($params[$paramName])) {
                                     $methodParams[] = $params[$paramName];
-                                }
-                                else {
+                                } else {
                                     throw new UndefinedControllerException("Missing parameter: $paramName");
                                 }
                             }
@@ -50,8 +49,7 @@ class Router
 
 
                 }
-            }
-            else{
+            } else {
                 throw new UndefinedControllerException($controller);
             }
         }

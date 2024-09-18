@@ -5,28 +5,30 @@ namespace App;
 use App\Controllers\AuthUser;
 use App\Controllers\DashboardController;
 use App\Controllers\UserManagementController;
+use App\Exceptions\AccessException;
 use App\Exceptions\UndefinedControllerException;
 use Dotenv\Dotenv;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 
 class Kernel
 {
     private static ?Kernel $instance = null;
     private Router $router;
     private array $availableControllers = array(
-        'dashboard'=>DashboardController::class,
-        'usermanagement'=>UserManagementController::class,
-        'authuser'=>AuthUser::class,
+        'dashboard' => DashboardController::class,
+        'usermanagement' => UserManagementController::class,
+        'authuser' => AuthUser::class,
     );
 
     private function __construct()
     {
         $this->router = new Router();
+        Session::start();
     }
 
     public static function getInstance(): Kernel
     {
-        if (static::$instance === null)
-        {
+        if (static::$instance === null) {
             static::$instance = new Kernel();
             self::initEnv();
         }
@@ -37,28 +39,20 @@ class Kernel
     public function run(): void
     {
         View::render('indexView.header', ['title' => 'Your Application Title']);
-        try
-        {
+        try {
             $this->router->route($this->availableControllers);
-        }
-        catch (UndefinedControllerException $e)
-        {
+        } catch (UndefinedControllerException $e) {
             echo 'UndefinedControllerException: ' . $e->getMessage();
 
         }
         View::render('indexView.footer');
     }
-    private static function initEnv():void
+
+    private static function initEnv(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->safeload();
     }
-
-
-
-
-
-
 
 
 }

@@ -18,6 +18,7 @@ class UserManagementController
             View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony"]);
         }
     }
+
     public function create(): void
     {
         View::render('UserManagement..AuthUser.register');

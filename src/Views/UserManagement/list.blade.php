@@ -1,8 +1,4 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+
 <form action='/praktyki24-25/public/index.php?controller=usermanagement&do=create' method='POST'>
     <input type='submit' value='Dodaj użytkownika'>
 </form>

@@ -1,8 +1,4 @@
-<?php
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-?>
+
 @if(isset($user))
     <form action='/praktyki24-25/public/index.php?controller=usermanagement&do=edit' method='POST'>
         <input type='hidden' name='id' value='{{ $user->getId() }}'>
