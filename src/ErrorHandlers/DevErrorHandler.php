@@ -8,7 +8,7 @@ use App\Logger;
 class DevErrorHandler implements ErrorHandlerInterface
 {
 
-    public function errorHandler($errno, $errstr, $errfile, $errline): void
+    public function errorHandler(int $errno,string $errstr,string $errfile,int $errline): void
     {
         Logger::getInstance()->error("[$errno] $errstr in $errfile in line $errline");
         echo "Error occurred: [$errno] $errstr in $errfile on line $errline<br>";

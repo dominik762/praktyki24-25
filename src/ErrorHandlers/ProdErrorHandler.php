@@ -2,11 +2,12 @@
 
 namespace App\ErrorHandlers;
 
+use App\Interfaces\ErrorHandlerInterface;
 use App\Logger;
 
-class ProdErrorHandler
+class ProdErrorHandler implements ErrorHandlerInterface
 {
-    public function errorHandler($errno, $errstr, $errfile, $errline): void
+    public function errorHandler(int $errno,string $errstr,string $errfile,int $errline): void
     {
         Logger::getInstance()->error("[$errno] $errstr in $errfile in line $errline");
     }

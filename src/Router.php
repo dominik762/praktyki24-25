@@ -66,16 +66,17 @@ class Router
     {
         $url = $_SERVER['REQUEST_URI'];
         $Urls = new Urls();
-        $Urls->loadUrls();
-        $availableRoutes = $Urls->getAvailableRoutes();
+        $availableRoutes = $Urls->loadUrls();
+
         foreach ($availableRoutes as $route) {
-            if ($route['url'] == $url) {
+            if ($route['url'] === $url) {
                 $middlewares = $route['middleware'];
-                /* @var EnsureUserIsLoggedInMiddleware $middleware */
-                foreach ($middlewares as $middleware) {
+                foreach ($middlewares as $middlewareClass) {
+                    $middleware = new $middlewareClass();
                     $middleware->handle();
                 }
             }
         }
     }
+
 }

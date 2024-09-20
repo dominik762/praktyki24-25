@@ -44,9 +44,9 @@ class Kernel
 
     public function run(): void
     {
+        $this->session->start();
         View::render('indexView.header', ['title' => 'Your Application Title']);
         try {
-            $this->session->start();
             $this->router->route($this->availableControllers);
         } catch (UndefinedControllerException $e) {
             echo 'UndefinedControllerException: ' . $e->getMessage();
