@@ -10,49 +10,55 @@ use Symfony\Component\Finder\Finder;
 class Urls
 {
     private Filesystem $filesystem;
+    private array $availableRoutes=[];
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct()
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = new Filesystem();
     }
 
     /**
      * @throws FileNotFoundException
      */
-    private function loadUrls(): array
+    public function loadUrls(): array
     {
         $directory = '../routes';
 
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.php');
 
-        $availableRoutes = [];
+        $availableRoutes = $this->getAvailableRoutes();
 
         foreach ($finder as $file) {
             $filePath = $file->getRealPath();
             if ($this->filesystem->exists($filePath)) {
                 $routes = $this->filesystem->getRequire($filePath);
-                $availableRoutes = array_merge($availableRoutes, $routes);
+                if (is_array($routes)) {
+                    $availableRoutes = array_merge($availableRoutes, $routes);
+                }
             }
         }
 
         return $availableRoutes;
     }
 
+    public function getAvailableRoutes(): array
+    {
+        return $this->availableRoutes;
+    }
+
     /**
      * @throws FileNotFoundException
      * @throws UndefinedRouteException
      */
-    public static function pickUrl(string $routeKey): string
+    public function pickUrl(string $routeKey): string
     {
-        $filesystem = Kernel::getFilesystem();
-        $urls = new Urls($filesystem);
+        $availableRoutes = $this->loadUrls();
 
-        $availableRoutes = $urls->loadUrls();
         if (array_key_exists($routeKey, $availableRoutes)) {
-            return $availableRoutes[$routeKey];
+            return $availableRoutes[$routeKey]['url'];
         }
 
-        throw new UndefinedRouteException("Nie znaleziono: " . $routeKey . "!");
+        throw new UndefinedRouteException("Route not found: " . $routeKey . "!");
     }
 }

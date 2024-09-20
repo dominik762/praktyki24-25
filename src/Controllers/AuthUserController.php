@@ -3,16 +3,18 @@
 namespace App\Controllers;
 
 use App\Database;
+use App\Exceptions\UndefinedRouteException;
 use App\Exceptions\ValidationException;
 use App\Redirect;
 use App\User;
 use App\View;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use PDO;
 
 /**
  * @throws ValidationException
  */
-class AuthUser
+class AuthUserController
 {
     private static function validatePassword(string $password, string $passwordConfirmation): void
     {
@@ -87,6 +89,10 @@ class AuthUser
         ]);
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws UndefinedRouteException
+     */
     public function login(): void
     {
         if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
@@ -103,18 +109,19 @@ class AuthUser
         }
     }
 
+    /**
+     * @throws FileNotFoundException
+     * @throws UndefinedRouteException
+     */
     public function logout(): void
     {
         $_SESSION = [];
         session_destroy();
-        Redirect::to('dashboard.show');
+        Redirect::to('authuser.signIn');
     }
 
     public function signOut(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
         if (isset($_SESSION['userId'])) {
             $userId = $_SESSION['userId'];
             $user = User::find($userId);

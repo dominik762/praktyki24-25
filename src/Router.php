@@ -4,17 +4,22 @@ namespace App;
 
 use App\Exceptions\UndefinedControllerException;
 use App\Exceptions\UndefinedRouteException;
+use App\Middleware\EnsureUserIsLoggedInMiddleware;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use ReflectionException;
+use ReflectionMethod;
 
 class Router
 {
     /**
      * @throws UndefinedControllerException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      * @throws UndefinedRouteException
+     * @throws FileNotFoundException
      */
     public function route(array $availableControllers): void
     {
-        Session::checkAccess();
+        $this->handleMiddlewares();
         if (isset($_GET['controller']) && isset($_GET['do'])) {
             $controller = htmlspecialchars($_GET['controller']);
             $do = htmlspecialchars($_GET['do']);
@@ -26,7 +31,7 @@ class Router
                 if (class_exists($className)) {
                     $class = new $className();
 
-                    $reflection = new \ReflectionMethod($class, $do);
+                    $reflection = new ReflectionMethod($class, $do);
                     $requiredParams = $reflection->getParameters();
 
                     if (method_exists($class, $do)) {
@@ -46,11 +51,30 @@ class Router
                             $class->{$do}();
                         }
                     }
-
-
                 }
             } else {
                 throw new UndefinedControllerException($controller);
+            }
+        }
+    }
+
+    /**
+     * @throws FileNotFoundException
+     * @throws UndefinedRouteException
+     */
+    private function handleMiddlewares(): void
+    {
+        $url = $_SERVER['REQUEST_URI'];
+        $Urls = new Urls();
+        $Urls->loadUrls();
+        $availableRoutes = $Urls->getAvailableRoutes();
+        foreach ($availableRoutes as $route) {
+            if ($route['url'] == $url) {
+                $middlewares = $route['middleware'];
+                /* @var EnsureUserIsLoggedInMiddleware $middleware */
+                foreach ($middlewares as $middleware) {
+                    $middleware->handle();
+                }
             }
         }
     }
