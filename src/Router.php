@@ -65,8 +65,7 @@ class Router
     private function handleMiddlewares(): void
     {
         $url = $_SERVER['REQUEST_URI'];
-        $Urls = new Urls();
-        $availableRoutes = $Urls->loadUrls();
+        $availableRoutes = Urls::getAvailableRoutes();
 
         foreach ($availableRoutes as $route) {
             if ($route['url'] === $url) {

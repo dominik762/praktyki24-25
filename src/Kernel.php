@@ -27,7 +27,7 @@ class Kernel
      */
     private function __construct()
     {
-        self::initEnv();
+        $this->initEnv();
         $this->router = new Router();
         $this->session = new Session();
         $this->initMode();
@@ -55,7 +55,7 @@ class Kernel
         View::render('indexView.footer');
     }
 
-    private static function initEnv(): void
+    private function initEnv(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->safeload();

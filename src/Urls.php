@@ -10,24 +10,34 @@ use Symfony\Component\Finder\Finder;
 class Urls
 {
     private Filesystem $filesystem;
-    private array $availableRoutes=[];
+    private static array $availableRoutes = [];
+    private static ?Urls $instance = null;
 
-    public function __construct()
+    private function __construct()
     {
         $this->filesystem = new Filesystem();
+        $this->loadUrls();
+    }
+
+    public static function getInstance(): Urls
+    {
+        if (static::$instance == null) {
+            static::$instance = new Urls();
+        }
+        return static::$instance;
     }
 
     /**
      * @throws FileNotFoundException
      */
-    public function loadUrls(): array
+    private function loadUrls(): void
     {
         $directory = '../routes';
 
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.php');
 
-        $availableRoutes = $this->getAvailableRoutes();
+        $availableRoutes = static::$availableRoutes;
 
         foreach ($finder as $file) {
             $filePath = $file->getRealPath();
@@ -39,21 +49,23 @@ class Urls
             }
         }
 
-        return $availableRoutes;
+        static::$availableRoutes = $availableRoutes;
     }
 
-    public function getAvailableRoutes(): array
+    public static function getAvailableRoutes(): array
     {
-        return $this->availableRoutes;
+        $Urls = self::getInstance();
+        return $Urls::$availableRoutes;
     }
 
     /**
      * @throws FileNotFoundException
      * @throws UndefinedRouteException
      */
-    public function pickUrl(string $routeKey): string
+    public static function pickUrl(string $routeKey): string
     {
-        $availableRoutes = $this->loadUrls();
+        $Urls = self::getInstance();
+        $availableRoutes = $Urls::$availableRoutes;
 
         if (array_key_exists($routeKey, $availableRoutes)) {
             return $availableRoutes[$routeKey]['url'];

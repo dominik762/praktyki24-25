@@ -14,7 +14,7 @@ class Redirect
      */
     #[NoReturn] public static function to(string $url): void
     {
-        header('Location: ' . (new Urls)->pickUrl($url));
+        header('Location: ' . Urls::pickUrl($url));
         exit();
     }
 
