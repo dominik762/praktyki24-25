@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Redirect requests from '/praktyki24-25/public/' to '/praktyki24-25/'
+RewriteCond %{THE_REQUEST} \s/public/([^\s]*) [NC]
+RewriteRule ^ /%1 [L,R=301]
+
+# Internally route requests to the /public directory
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/$1 [L]

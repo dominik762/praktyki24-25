@@ -1,4 +1,4 @@
-<form action="http://localhost/praktyki24-25/public/index.php?controller=authuser&do=register" method="post">
+<form action="{{$absolute_url}}/index.php?controller=authuser&do=register" method="post">
     <h2>Rejestracja</h2>
 
     <label for="name">Nazwa:</label>

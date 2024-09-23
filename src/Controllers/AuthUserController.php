@@ -65,7 +65,9 @@ class AuthUserController
     public function signIn(): void
     {
         if (empty($_SESSION['userId'])) {
-            View::render('UserManagement.AuthUser.signIn');
+            View::render('UserManagement.AuthUser.signIn',[
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
+            ]);
         } else {
             Redirect::to('dashboard.show');
         }
@@ -129,6 +131,7 @@ class AuthUserController
                 'UserManagement.AuthUser.signOut',
                 [
                     'name' => $user->getName(),
+                    'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
                 ]
             );
         }

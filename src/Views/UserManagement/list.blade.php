@@ -1,5 +1,5 @@
 
-<form action='/praktyki24-25/public/index.php?controller=usermanagement&do=create' method='POST'>
+<form action='{{$absolute_url}}/index.php?controller=usermanagement&do=create' method='POST'>
     <input type='submit' value='Dodaj użytkownika'>
 </form>
 
@@ -14,12 +14,12 @@
         </a>
     </div>
 
-    <form action='/praktyki24-25/public/index.php?controller=usermanagement&do=delete' method='POST'>
+    <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete' method='POST'>
         <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
         <input type='submit' value='Usuń {{ $user["name"] }}'>
     </form>
 
-    <form action='/praktyki24-25/public/index.php?controller=usermanagement&do=editForm' method='POST'>
+    <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm' method='POST'>
         <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
         <input type='submit' value='Edytuj {{ $user["name"] }}'>
     </form>

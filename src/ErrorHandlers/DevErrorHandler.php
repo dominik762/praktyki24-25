@@ -16,8 +16,13 @@ class DevErrorHandler implements ErrorHandlerInterface
 
     public function exceptionHandler($exception): void
     {
-        Logger::getInstance()->error($exception->getMessage());
-        echo "Exception occurred: " . $exception->getMessage() . "<br>";
+        $errno = $exception->getCode();
+        $errstr = $exception->getMessage();
+        $errfile = $exception->getFile();
+        $errline = $exception->getLine();
+
+        Logger::getInstance()->error("[$errno] $errstr in $errfile on line $errline");
+        echo "Exception occurred: [$errno] $errstr in $errfile on line $errline<br>";
     }
 
     public function shutdownHandler(): void
