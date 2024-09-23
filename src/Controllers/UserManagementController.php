@@ -21,7 +21,7 @@ class UserManagementController
 
     public function create(): void
     {
-        View::render('UserManagement..AuthUser.register');
+        View::render('UserManagement..AuthUserController.register');
     }
 
     public static function showAll(): void

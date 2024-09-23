@@ -2,30 +2,35 @@
 
 namespace App;
 
-use App\Controllers\AuthUser;
+use App\Controllers\AuthUserController;
 use App\Controllers\DashboardController;
 use App\Controllers\UserManagementController;
-use App\Exceptions\AccessException;
+use App\ErrorHandlers\DevErrorHandler;
+use App\ErrorHandlers\ProdErrorHandler;
+use App\Exceptions\UndefinedAppModeException;
 use App\Exceptions\UndefinedControllerException;
 use Dotenv\Dotenv;
-use Illuminate\Filesystem\Filesystem;
 
 class Kernel
 {
     private static ?Kernel $instance = null;
-    private static ?Filesystem $filesystem = null;
     private Router $router;
+    private Session $session;
     private array $availableControllers = array(
         'dashboard' => DashboardController::class,
         'usermanagement' => UserManagementController::class,
-        'authuser' => AuthUser::class,
+        'authuser' => AuthUserController::class,
     );
 
+    /**
+     * @throws UndefinedAppModeException
+     */
     private function __construct()
     {
-        self::initEnv();
+        $this->initEnv();
         $this->router = new Router();
-        Session::start();
+        $this->session = new Session();
+        $this->initMode();
     }
 
     public static function getInstance(): Kernel
@@ -37,16 +42,9 @@ class Kernel
         return static::$instance;
     }
 
-    public static function getFilesystem(): Filesystem
-    {
-        if (static::$filesystem === null) {
-            static::$filesystem = new Filesystem();
-        }
-        return static::$filesystem;
-    }
-
     public function run(): void
     {
+        $this->session->start();
         View::render('indexView.header', ['title' => 'Your Application Title']);
         try {
             $this->router->route($this->availableControllers);
@@ -57,11 +55,30 @@ class Kernel
         View::render('indexView.footer');
     }
 
-    private static function initEnv(): void
+    private function initEnv(): void
     {
         $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->safeload();
     }
 
+    private function initMode(): void
+    {
+        if ($_ENV['APP_ENV'] === 'prod') {
+            $displayErrorValue = 0;
+            $errorHandler = new ProdErrorHandler();
+        } else if ($_ENV['APP_ENV'] === 'dev') {
+            $displayErrorValue = 1;
+            $errorHandler = new DevErrorHandler();
+        } else {
+            throw new UndefinedAppModeException("Nieznany tryb obsługi błędów");
+        }
 
+        set_error_handler([$errorHandler, 'errorHandler']);
+        set_exception_handler([$errorHandler, 'exceptionHandler']);
+        register_shutdown_function([$errorHandler, 'shutdownHandler']);
+
+        ini_set('display_errors', $displayErrorValue);
+        ini_set('display_startup_errors', $displayErrorValue);
+        error_reporting($displayErrorValue ? E_ALL : 0);
+    }
 }

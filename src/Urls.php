@@ -10,33 +10,52 @@ use Symfony\Component\Finder\Finder;
 class Urls
 {
     private Filesystem $filesystem;
+    private static array $availableRoutes = [];
+    private static ?Urls $instance = null;
 
-    public function __construct(Filesystem $filesystem)
+    private function __construct()
     {
-        $this->filesystem = $filesystem;
+        $this->filesystem = new Filesystem();
+        $this->loadUrls();
+    }
+
+    public static function getInstance(): Urls
+    {
+        if (static::$instance == null) {
+            static::$instance = new Urls();
+        }
+        return static::$instance;
     }
 
     /**
      * @throws FileNotFoundException
      */
-    private function loadUrls(): array
+    private function loadUrls(): void
     {
         $directory = '../routes';
 
         $finder = new Finder();
         $finder->files()->in($directory)->name('*.php');
 
-        $availableRoutes = [];
+        $availableRoutes = static::$availableRoutes;
 
         foreach ($finder as $file) {
             $filePath = $file->getRealPath();
             if ($this->filesystem->exists($filePath)) {
                 $routes = $this->filesystem->getRequire($filePath);
-                $availableRoutes = array_merge($availableRoutes, $routes);
+                if (is_array($routes)) {
+                    $availableRoutes = array_merge($availableRoutes, $routes);
+                }
             }
         }
 
-        return $availableRoutes;
+        static::$availableRoutes = $availableRoutes;
+    }
+
+    public static function getAvailableRoutes(): array
+    {
+        $Urls = self::getInstance();
+        return $Urls::$availableRoutes;
     }
 
     /**
@@ -45,14 +64,13 @@ class Urls
      */
     public static function pickUrl(string $routeKey): string
     {
-        $filesystem = Kernel::getFilesystem();
-        $urls = new Urls($filesystem);
+        $Urls = self::getInstance();
+        $availableRoutes = $Urls::$availableRoutes;
 
-        $availableRoutes = $urls->loadUrls();
         if (array_key_exists($routeKey, $availableRoutes)) {
-            return $availableRoutes[$routeKey];
+            return $availableRoutes[$routeKey]['url'];
         }
 
-        throw new UndefinedRouteException("Nie znaleziono: " . $routeKey . "!");
+        throw new UndefinedRouteException("Route not found: " . $routeKey . "!");
     }
 }
