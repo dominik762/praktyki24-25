@@ -1,5 +1,5 @@
 
-<form action="http://localhost/praktyki24-25/public/index.php?controller=authuser&do=login" method="post">
+<form action="{{$absolute_url}}/index.php?controller=authuser&do=login" method="post">
     <h2>Logowanie</h2>
 
     <label for="name">Nazwa:</label>

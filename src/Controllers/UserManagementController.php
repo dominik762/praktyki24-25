@@ -13,15 +13,21 @@ class UserManagementController
     {
         $user = User::find($id);
         if ($user) {
-            View::render('UserManagement.show', ['user' => $user]);
+            View::render('UserManagement.show', ['user' => $user,
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
+                ]);
         } else {
-            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony"]);
+            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony",
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
+                ]);
         }
     }
 
     public function create(): void
     {
-        View::render('UserManagement..AuthUserController.register');
+        View::render('UserManagement..AuthUser.register',[
+            'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
+        ]);
     }
 
     public static function showAll(): void
@@ -32,7 +38,8 @@ class UserManagementController
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        View::render('UserManagement.list', ['users' => $users]);
+        View::render('UserManagement.list', ['users' => $users,
+            'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
     }
 
     public function delete(int $id): void
@@ -43,9 +50,11 @@ class UserManagementController
             $sql = "DELETE FROM users WHERE id = ?";
             $stmt = $db->prepare($sql);
             $stmt->execute([$id]);
-            View::render('UserManagement.show', ['message' => "Użytkownik o ID $id został usunięty."]);
+            View::render('UserManagement.show', ['message' => "Użytkownik o ID $id został usunięty.",
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         } else {
-            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony."]);
+            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony.",
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         }
     }
 
@@ -63,9 +72,11 @@ class UserManagementController
     {
         $user = User::find($id);
         if ($user) {
-            View::render('UserManagement.editForm', ['user' => $user]);
+            View::render('UserManagement.editForm', ['user' => $user,
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         } else {
-            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony"]);
+            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony",
+                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         }
     }
 }

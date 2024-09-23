@@ -56,6 +56,9 @@ class Router
                 throw new UndefinedControllerException($controller);
             }
         }
+        else{
+            Redirect::to('authuser.signIn');
+        }
     }
 
     /**

@@ -45,7 +45,10 @@ class Kernel
     public function run(): void
     {
         $this->session->start();
-        View::render('indexView.header', ['title' => 'Your Application Title']);
+        View::render('indexView.header', [
+            'title' => 'Your Application Title',
+            'absoulte_url' => $_ENV['APP_ABSOLUTE_URL'],
+        ]);
         try {
             $this->router->route($this->availableControllers);
         } catch (UndefinedControllerException $e) {

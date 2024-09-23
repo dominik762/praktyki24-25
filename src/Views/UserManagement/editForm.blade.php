@@ -1,6 +1,6 @@
 
 @if(isset($user))
-    <form action='/praktyki24-25/public/index.php?controller=usermanagement&do=edit' method='POST'>
+    <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=edit' method='POST'>
         <input type='hidden' name='id' value='{{ $user->getId() }}'>
         <label for="name">Nazwa:</label>
         <input type="text" id="name" name="name" required value="{{ $user->getName() }}">
