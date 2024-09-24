@@ -89,6 +89,7 @@ class AuthUserController
             $email,
             $password
         ]);
+        Redirect::to('usermanagement.showAll');
     }
 
     /**
