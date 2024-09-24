@@ -18,7 +18,7 @@ class AuthUserController
 {
     private static function validatePassword(string $password, string $passwordConfirmation): void
     {
-        if (!isset($password) || !isset($password_confirmation)) {
+        if (!isset($password) || !isset($passwordConfirmation)) {
             throw new ValidationException("Trzeba podać hasło!");
         }
         if ($password == $passwordConfirmation) {
