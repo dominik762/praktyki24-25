@@ -13,6 +13,4 @@
         <button type="submit">Wyślij</button>
     </form>
     <div id="response"></div>
-
-    <script src="script.js"></script>
 </div>
