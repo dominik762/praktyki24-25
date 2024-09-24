@@ -1,26 +1,29 @@
-
 <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=create' method='POST'>
-    <input type='submit' value='Dodaj użytkownika'>
+    <div class="align-content-md-center">
+        <input class="btn btn-success" type='submit' value='Dodaj użytkownika'>
+    </div>
 </form>
 
 @foreach($users as $user)
     <br>
-    <div>
-        <a>
-            <span>{{ htmlspecialchars($user['id']) }}</span>
-            <span>{{ htmlspecialchars($user['name']) }}</span>
-            <span>{{ htmlspecialchars($user['email']) }}</span>
-            <span>{{ htmlspecialchars($user['password']) }}</span>
-        </a>
+    <div class="container">
+        <div class="row d-inline">
+            <span class="col-1">{{ htmlspecialchars($user['id']) }}</span>
+            <span class="col-1">{{ htmlspecialchars($user['name']) }}</span>
+            <span class="col-1">{{ htmlspecialchars($user['email']) }}</span>
+            <span class="col-1">{{ htmlspecialchars($user['password']) }}</span>
+        </div>
+        <div class="d-inline">
+            <form class="d-inline" action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm'
+                  method='POST'>
+                <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
+                <input class="btn btn-outline-primary" type='submit' value='Edytuj {{ $user["name"] }}'>
+            </form>
+            <form class="d-inline" action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete'
+                  method='POST'>
+                <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
+                <input class="btn btn-outline-danger" type='submit' value='Usuń {{ $user["name"] }}'>
+            </form>
+        </div>
     </div>
-
-    <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete' method='POST'>
-        <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
-        <input type='submit' value='Usuń {{ $user["name"] }}'>
-    </form>
-
-    <form action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm' method='POST'>
-        <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
-        <input type='submit' value='Edytuj {{ $user["name"] }}'>
-    </form>
 @endforeach

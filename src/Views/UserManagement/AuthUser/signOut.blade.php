@@ -1,6 +1,5 @@
-
-<h2>Czy na pewno chcesz się wylogować, {{$name}}?</h2>
+<h2 class=" alert alert-danger ">Czy na pewno chcesz się wylogować, <span class="text-primary-emphasis">{{$name}}</span>?</h2>
 
 <form action="{{$absolute_url}}/index.php?controller=authuser&do=logout" method="post">
-    <input type="submit" value="Wyloguj się">
+    <input class="btn btn-outline-danger" type="submit" value="Wyloguj się">
 </form>
