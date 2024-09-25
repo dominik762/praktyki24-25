@@ -1,4 +1,4 @@
-<form action="{{$absolute_url}}/index.php?controller=authuser&do=register" method="post">
+<form id="registerForm" action="{{$absolute_url}}/index.php?controller=authuser&do=register" method="post">
     <h2 class="display-4 text-xl-center">Rejestracja</h2>
 
     <div class="align-content-md-center">
@@ -18,4 +18,5 @@
     <div class="align-content-md-center">
         <input class="btn btn-success" type="submit" value="Zarejestruj się">
     </div>
+    <div id="responseRegister"></div>
 </form>

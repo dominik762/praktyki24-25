@@ -1,11 +1,11 @@
 <?php
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $name = isset($_POST['name']) ? $_POST['name'] : 'Nieznany';
+    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING) ?? 'Nieznany';
 
-    // Wyślij odpowiedź
+    header('Content-Type: text/html; charset=UTF-8');
     echo "Witaj, " . htmlspecialchars($name) . "!";
 } else {
+    http_response_code(405);
     echo "Błąd: Nieprawidłowe żądanie";
 }
 ?>
-

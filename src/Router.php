@@ -4,7 +4,6 @@ namespace App;
 
 use App\Exceptions\UndefinedControllerException;
 use App\Exceptions\UndefinedRouteException;
-use App\Middleware\EnsureUserIsLoggedInMiddleware;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use ReflectionMethod;
@@ -46,7 +45,6 @@ class Router
                                 }
                             }
                             $class->{$do}(...$methodParams);
-
                         } else {
                             $class->{$do}();
                         }
@@ -55,8 +53,7 @@ class Router
             } else {
                 throw new UndefinedControllerException($controller);
             }
-        }
-        else{
+        } else {
             Redirect::to('authuser.signIn');
         }
     }

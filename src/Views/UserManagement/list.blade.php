@@ -1,8 +1,10 @@
-<form action='{{$absolute_url}}/index.php?controller=usermanagement&do=create' method='POST'>
+<form id="userAddForm" action="{{$absolute_url}}/index.php?controller=usermanagement&do=create" method="post">
     <div class="align-content-md-center">
-        <input class="btn btn-success" type='submit' value='Dodaj użytkownika'>
+        <input class="btn btn-success" type="submit" value="Dodaj użytkownika">
     </div>
+    <div id="responseUserAdd"></div>
 </form>
+
 
 @foreach($users as $user)
     <br>
@@ -13,17 +15,24 @@
             <span class="col-1">{{ htmlspecialchars($user['email']) }}</span>
             <span class="col-1">{{ htmlspecialchars($user['password']) }}</span>
         </div>
+
         <div class="d-inline">
-            <form class="d-inline" action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm'
+            <form id="editFormForm" class="d-inline"
+                  action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm'
                   method='POST'>
                 <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
                 <input class="btn btn-outline-primary" type='submit' value='Edytuj {{ $user["name"] }}'>
             </form>
-            <form class="d-inline" action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete'
+            <div id="responseEditForm"></div>
+
+            <form id="deleteForm" class="d-inline"
+                  action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete'
                   method='POST'>
                 <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
                 <input class="btn btn-outline-danger" type='submit' value='Usuń {{ $user["name"] }}'>
             </form>
+            <div id="responseDelete"></div>
+
         </div>
     </div>
 @endforeach
