@@ -47,7 +47,7 @@ class Kernel
         $this->session->start();
         View::render('indexView.header', [
             'title' => 'Your Application Title',
-            'absoulte_url' => $_ENV['APP_ABSOLUTE_URL'],
+            'absolute_url' => $_ENV['APP_ABSOLUTE_URL'],
         ]);
         try {
             $this->router->route($this->availableControllers);
@@ -55,7 +55,9 @@ class Kernel
             echo 'UndefinedControllerException: ' . $e->getMessage();
 
         }
-        View::render('indexView.footer');
+        View::render('indexView.footer',[
+            'absolute_url' => $_ENV['APP_ABSOLUTE_URL'],
+        ]);
     }
 
     private function initEnv(): void

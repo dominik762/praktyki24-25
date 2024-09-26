@@ -4,7 +4,6 @@ namespace App;
 
 use App\Exceptions\UndefinedControllerException;
 use App\Exceptions\UndefinedRouteException;
-use App\Middleware\EnsureUserIsLoggedInMiddleware;
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use ReflectionException;
 use ReflectionMethod;
@@ -23,7 +22,9 @@ class Router
         if (isset($_GET['controller']) && isset($_GET['do'])) {
             $controller = htmlspecialchars($_GET['controller']);
             $do = htmlspecialchars($_GET['do']);
-            $params = $_POST;
+            $params = $_GET;
+            unset($params['controller']);
+            unset($params['do']);
 
             if (isset($availableControllers[$controller])) {
                 $className = $availableControllers[$controller];
@@ -46,7 +47,6 @@ class Router
                                 }
                             }
                             $class->{$do}(...$methodParams);
-
                         } else {
                             $class->{$do}();
                         }
@@ -55,8 +55,7 @@ class Router
             } else {
                 throw new UndefinedControllerException($controller);
             }
-        }
-        else{
+        } else {
             Redirect::to('authuser.signIn');
         }
     }

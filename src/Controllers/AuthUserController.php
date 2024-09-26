@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Database;
 use App\Exceptions\UndefinedRouteException;
+use App\Exceptions\UndefinedUserIdException;
 use App\Exceptions\ValidationException;
 use App\Redirect;
 use App\User;
@@ -18,7 +19,7 @@ class AuthUserController
 {
     private static function validatePassword(string $password, string $passwordConfirmation): void
     {
-        if (!isset($password) || !isset($password_confirmation)) {
+        if (!isset($password) || !isset($passwordConfirmation)) {
             throw new ValidationException("Trzeba podać hasło!");
         }
         if ($password == $passwordConfirmation) {
@@ -54,11 +55,11 @@ class AuthUserController
         }
     }
 
-    private static function validateRequestData(array $data): void
+    private static function validateRequestData(string $name, string $email, string $password, string $passwordConfirmation): void
     {
-        self::validateName($data['name']);
-        self::validateEmail($data['name']);
-        self::validatePassword($data['password'], $data['password_confirmation']);
+        self::validateName($name);
+        self::validateEmail($email);
+        self::validatePassword($password, $passwordConfirmation);
     }
 
 
@@ -75,11 +76,13 @@ class AuthUserController
 
     public function register(): void
     {
-        self::validateRequestData($_POST);
-        $db = Database::getInstance();
         $name = $_POST['name'];
         $email = $_POST['email'];
         $password = $_POST['password'];
+        $passwordConfirmation = $_POST['password_confirmation'];
+        self::validateRequestData($name,$email,$password,$passwordConfirmation);
+        $db = Database::getInstance();
+
         $password = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO users (id, name, email, password) VALUES (null, ?, ?, ?)";
@@ -89,6 +92,7 @@ class AuthUserController
             $email,
             $password
         ]);
+        Redirect::to('usermanagement.showAll');
     }
 
     /**
@@ -134,6 +138,9 @@ class AuthUserController
                     'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],
                 ]
             );
+        }
+        else{
+            throw new UndefinedUserIdException("Brak userId");
         }
     }
 }

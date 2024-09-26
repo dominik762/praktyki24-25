@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Database;
+use App\Redirect;
 use App\User;
 use App\View;
 use PDO;
@@ -50,10 +51,9 @@ class UserManagementController
             $sql = "DELETE FROM users WHERE id = ?";
             $stmt = $db->prepare($sql);
             $stmt->execute([$id]);
-            View::render('UserManagement.show', ['message' => "Użytkownik o ID $id został usunięty.",
-                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
+            Redirect::to('usermanagement.showAll');
         } else {
-            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony.",
+            View::render('UserManagement.list', ['error' => "Użytkownik o ID $id nie został znaleziony.",
                 'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         }
     }
