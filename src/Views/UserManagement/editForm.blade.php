@@ -9,6 +9,4 @@
         <input class="form-control" type="password" id="password" name="password" required value="{{ $user->getPassword() }}">
         <input class="btn btn-success" type='submit' value='Zatwierdź zmiany dla {{ $user->getName() }}'>
     </form>
-    <div id="responseEdit"></div>
-
 </div>

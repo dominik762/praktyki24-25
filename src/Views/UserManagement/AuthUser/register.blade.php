@@ -18,5 +18,4 @@
     <div class="align-content-md-center">
         <input class="btn btn-success" type="submit" value="Zarejestruj się">
     </div>
-    <div id="responseRegister"></div>
 </form>

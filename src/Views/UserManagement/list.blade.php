@@ -2,7 +2,6 @@
     <div class="align-content-md-center">
         <input class="btn btn-success" type="submit" value="Dodaj użytkownika">
     </div>
-    <div id="responseUserAdd"></div>
 </form>
 
 
@@ -23,7 +22,6 @@
                 <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
                 <input class="btn btn-outline-primary" type='submit' value='Edytuj {{ $user["name"] }}'>
             </form>
-            <div id="responseEditForm"></div>
 
             <form id="deleteForm" class="d-inline"
                   action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete'
@@ -31,7 +29,6 @@
                 <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
                 <input class="btn btn-outline-danger" type='submit' value='Usuń {{ $user["name"] }}'>
             </form>
-            <div id="responseDelete"></div>
 
         </div>
     </div>

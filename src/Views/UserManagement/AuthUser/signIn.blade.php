@@ -9,5 +9,4 @@
         <input class="form-control" type="password" id="password" name="password" required>
         <input class="btn btn-outline-success" type="submit" value="Zaloguj się">
     </div>
-    <div id="responseLogin"></div>
 </form>
