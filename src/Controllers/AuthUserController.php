@@ -136,5 +136,8 @@ class AuthUserController
                 ]
             );
         }
+        else{
+            throw new \Exception("Brak userId");
+        }
     }
 }
