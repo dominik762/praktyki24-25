@@ -76,10 +76,10 @@ class AuthUserController
 
     public function register(): void
     {
-        $name = $_GET['name'];
-        $email = $_GET['email'];
-        $password = $_GET['password'];
-        $passwordConfirmation = $_GET['password_confirmation'];
+        $name = $_POST['name'];
+        $email = $_POST['email'];
+        $password = $_POST['password'];
+        $passwordConfirmation = $_POST['password_confirmation'];
         self::validateRequestData($name,$email,$password,$passwordConfirmation);
         $db = Database::getInstance();
 
@@ -101,10 +101,10 @@ class AuthUserController
      */
     public function login(): void
     {
-        if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['password'])) {
+        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
 
-            $email = $_GET['email'];
-            $providedPassword = $_GET['password'];
+            $email = $_POST['email'];
+            $providedPassword = $_POST['password'];
             $user = User::findByEmail($email);
             $isPasswordValid = password_verify($providedPassword, $user->getPassword());
             if ($isPasswordValid) {

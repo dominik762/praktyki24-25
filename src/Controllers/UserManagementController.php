@@ -60,11 +60,11 @@ class UserManagementController
 
     public function edit(int $id): void
     {
-        if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['password'])) {
+        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
             $db = Database::getInstance();
             $sql = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
             $stmt = $db->prepare($sql);
-            $stmt->execute([$_GET['name'], $_GET['email'], $_GET['password'], $id]);
+            $stmt->execute([$_POST['name'], $_POST['email'], $_POST['password'], $id]);
         }
     }
 
