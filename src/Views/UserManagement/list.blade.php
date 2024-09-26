@@ -1,5 +1,7 @@
-<form id="userAddForm" action="{{$absolute_url}}/index.php?controller=usermanagement&do=create" method="post">
+<form id="userAddForm" action="{{$absolute_url}}/index.php?controller=usermanagement&do=create" method="GET">
     <div class="align-content-md-center">
+        <input type="hidden" name="controller" value="usermanagement">
+        <input type="hidden" name="do" value="create">
         <input class="btn btn-success" type="submit" value="Dodaj użytkownika">
     </div>
 </form>
@@ -16,19 +18,8 @@
         </div>
 
         <div class="d-inline">
-            <form id="editFormForm" class="d-inline"
-                  action='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm'
-                  method='POST'>
-                <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
-                <input class="btn btn-outline-primary" type='submit' value='Edytuj {{ $user["name"] }}'>
-            </form>
-
-            <form id="deleteForm" class="d-inline"
-                  action='{{$absolute_url}}/index.php?controller=usermanagement&do=delete'
-                  method='POST'>
-                <input type='hidden' name='id' value='{{ htmlspecialchars($user['id']) }}'>
-                <input class="btn btn-outline-danger" type='submit' value='Usuń {{ $user["name"] }}'>
-            </form>
+            <a href='{{$absolute_url}}/index.php?controller=usermanagement&do=editForm&id={{$user['id']}}'>Edytuj</a>
+            <a href='{{$absolute_url}}/index.php?controller=usermanagement&do=delete&id={{$user['id']}}'>Usuń</a>
 
         </div>
     </div>

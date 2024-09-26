@@ -1,5 +1,5 @@
 <div class="md-3">
-    <form id="EditForm" action='{{$absolute_url}}/index.php?controller=usermanagement&do=edit' method='POST'>
+    <form id="EditForm" action='{{$absolute_url}}/index.php?controller=usermanagement&do=edit' method='GET'>
         <input class="form-control" type='hidden' name='id' value='{{ $user->getId() }}'>
         <label class="form-label" for="name">Nazwa:</label>
         <input class="form-control" type="text" id="name" name="name" required value="{{ $user->getName() }}">

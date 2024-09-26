@@ -1,6 +1,8 @@
-<form id="loginForm" action="{{$absolute_url}}/index.php?controller=authuser&do=login" method="post">
+<form id="loginForm" action="{{$absolute_url}}/index.php?controller=authuser&do=login" method="GET">
     <div class="align-content-md-center">
         <h2>Logowanie</h2>
+        <input type="hidden" name="controller" value="authuser">
+        <input type="hidden" name="do" value="login">
         <label class="form-label" for="name">Nazwa:</label>
         <input class="form-control" type="text" id="name" name="name" required>
         <label class="form-label" for="email">Email:</label>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Database;
 use App\Exceptions\UndefinedRouteException;
+use App\Exceptions\UndefinedUserIdException;
 use App\Exceptions\ValidationException;
 use App\Redirect;
 use App\User;
@@ -54,11 +55,11 @@ class AuthUserController
         }
     }
 
-    private static function validateRequestData(array $data): void
+    private static function validateRequestData(string $name, string $email, string $password, string $passwordConfirmation): void
     {
-        self::validateName($data['name']);
-        self::validateEmail($data['name']);
-        self::validatePassword($data['password'], $data['password_confirmation']);
+        self::validateName($name);
+        self::validateEmail($email);
+        self::validatePassword($password, $passwordConfirmation);
     }
 
 
@@ -75,11 +76,13 @@ class AuthUserController
 
     public function register(): void
     {
-        self::validateRequestData($_POST);
+        $name = $_GET['name'];
+        $email = $_GET['email'];
+        $password = $_GET['password'];
+        $passwordConfirmation = $_GET['password_confirmation'];
+        self::validateRequestData($name,$email,$password,$passwordConfirmation);
         $db = Database::getInstance();
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+
         $password = password_hash($password, PASSWORD_DEFAULT);
 
         $sql = "INSERT INTO users (id, name, email, password) VALUES (null, ?, ?, ?)";
@@ -98,10 +101,10 @@ class AuthUserController
      */
     public function login(): void
     {
-        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
+        if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['password'])) {
 
-            $email = $_POST['email'];
-            $providedPassword = $_POST['password'];
+            $email = $_GET['email'];
+            $providedPassword = $_GET['password'];
             $user = User::findByEmail($email);
             $isPasswordValid = password_verify($providedPassword, $user->getPassword());
             if ($isPasswordValid) {
@@ -137,7 +140,7 @@ class AuthUserController
             );
         }
         else{
-            throw new \Exception("Brak userId");
+            throw new UndefinedUserIdException("Brak userId");
         }
     }
 }

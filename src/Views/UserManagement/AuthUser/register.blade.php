@@ -1,4 +1,4 @@
-<form id="registerForm" action="{{$absolute_url}}/index.php?controller=authuser&do=register" method="post">
+<form id="registerForm" action="{{$absolute_url}}/index.php?controller=authuser&do=register" method="GET">
     <h2 class="display-4 text-xl-center">Rejestracja</h2>
 
     <div class="align-content-md-center">
@@ -15,6 +15,8 @@
         <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" required>
     </div>
     <br>
+    <input type="hidden" name="controller" value="authuser">
+    <input type="hidden" name="do" value="register">
     <div class="align-content-md-center">
         <input class="btn btn-success" type="submit" value="Zarejestruj się">
     </div>

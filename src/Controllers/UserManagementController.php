@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Database;
+use App\Redirect;
 use App\User;
 use App\View;
 use PDO;
@@ -50,21 +51,20 @@ class UserManagementController
             $sql = "DELETE FROM users WHERE id = ?";
             $stmt = $db->prepare($sql);
             $stmt->execute([$id]);
-            View::render('UserManagement.show', ['message' => "Użytkownik o ID $id został usunięty.",
-                'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
+            Redirect::to('usermanagement.showAll');
         } else {
-            View::render('UserManagement.show', ['error' => "Użytkownik o ID $id nie został znaleziony.",
+            View::render('UserManagement.list', ['error' => "Użytkownik o ID $id nie został znaleziony.",
                 'absolute_url'=>$_ENV['APP_ABSOLUTE_URL'],]);
         }
     }
 
     public function edit(int $id): void
     {
-        if (isset($_POST['name']) && isset($_POST['email']) && isset($_POST['password'])) {
+        if (isset($_GET['name']) && isset($_GET['email']) && isset($_GET['password'])) {
             $db = Database::getInstance();
             $sql = "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?";
             $stmt = $db->prepare($sql);
-            $stmt->execute([$_POST['name'], $_POST['email'], $_POST['password'], $id]);
+            $stmt->execute([$_GET['name'], $_GET['email'], $_GET['password'], $id]);
         }
     }
 
